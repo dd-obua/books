@@ -5,7 +5,7 @@ const btnAddBook = document.getElementById('btn-add-book');
 const inputTitle = document.getElementById('input-title');
 const inputAuthor = document.getElementById('input-author');
 
-let bookCollection = [];
+let bookCollection = JSON.parse(localStorage.getItem('collection')) || [];
 
 const clearInputs = () => {
   inputTitle.value = '';
@@ -22,23 +22,24 @@ const addNewBook = (e) => {
   if (!author) return;
 
   bookCollection.push({ title, author });
+  localStorage.setItem('collection', JSON.stringify(bookCollection));
 
   clearInputs();
 
-  renderBook();
+  renderBook(bookCollection);
 };
 
 const removeBook = (id) => {
   bookCollection = bookCollection.filter((book, index) => index !== id);
-  return bookCollection;
+  localStorage.setItem('collection', bookCollection);
 };
 
 const clearListView = () => (booksElem.innerHTML = '');
 
-const renderBook = () => {
+const renderBook = (collection) => {
   clearListView();
 
-  return bookCollection.forEach((book, index) => {
+  collection.forEach((book, index) => {
     const bookMarkup = `
       <li data-id=${index}>
         <span class="title">${book.title}</span>
@@ -58,5 +59,7 @@ booksElem.addEventListener('click', (e) => {
   const li = e.target.closest('li');
   const { id } = li.dataset;
   removeBook(+id);
-  renderBook();
+  renderBook(bookCollection);
 });
+
+renderBook(bookCollection);
