@@ -14,7 +14,7 @@ html {
 body,
 button,
 input {
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   font-family: 'Inter', sans-serif;
 }
 
@@ -23,7 +23,8 @@ section {
 }
 
 h1 {
-  margin-bottom: 2.4rem;
+  margin: 1.2rem 0 2.4rem;
+  font-size: 3.2rem;
 }
 
 span {
