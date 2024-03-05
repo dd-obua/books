@@ -7,10 +7,33 @@ const inputAuthor = document.getElementById('input-author');
 
 const bookCollection = [];
 
+const clearInputs = () => {
+  inputTitle.value = '';
+  inputAuthor.value = '';
+};
+
+const addNewBook = (e) => {
+  e.preventDefault();
+
+  const title = inputTitle.value;
+  const author = inputAuthor.value;
+
+  if (!title) return;
+  if (!author) return;
+
+  bookCollection.push({ title, author });
+
+  clearInputs();
+
+  renderBook();
+};
+
 const removeBook = (id) => bookCollection.filter((book) => book.id !== id);
 
+const clearListView = () => (booksElem.innerHTML = '');
+
 const renderBook = () => {
-  booksElem.innerHTML = '';
+  clearListView();
 
   return bookCollection.forEach((book) => {
     const bookMarkup = `
@@ -24,21 +47,4 @@ const renderBook = () => {
   });
 };
 
-btnAddBook.addEventListener('click', (e) => {
-  e.preventDefault();
-
-  const title = inputTitle.value;
-  const author = inputAuthor.value;
-
-  if (!title) return;
-  if (!author) return;
-
-  bookCollection.push({ title, author });
-
-  inputTitle.value = '';
-  inputAuthor.value = '';
-
-  e.preventDefault();
-
-  renderBook();
-});
+btnAddBook.addEventListener('click', addNewBook);
