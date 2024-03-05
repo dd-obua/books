@@ -5,7 +5,7 @@ const btnAddBook = document.getElementById('btn-add-book');
 const inputTitle = document.getElementById('input-title');
 const inputAuthor = document.getElementById('input-author');
 
-const bookCollection = [];
+let bookCollection = [];
 
 const clearInputs = () => {
   inputTitle.value = '';
@@ -28,19 +28,22 @@ const addNewBook = (e) => {
   renderBook();
 };
 
-const removeBook = (id) => bookCollection.filter((book) => book.id !== id);
+const removeBook = (id) => {
+  bookCollection = bookCollection.filter((book, index) => index !== id);
+  return bookCollection;
+};
 
 const clearListView = () => (booksElem.innerHTML = '');
 
 const renderBook = () => {
   clearListView();
 
-  return bookCollection.forEach((book) => {
+  return bookCollection.forEach((book, index) => {
     const bookMarkup = `
-      <li>
+      <li data-id=${index}>
         <span class="title">${book.title}</span>
         <span class="author">${book.author}</span>
-        <button>Remove</button>
+        <button id='remove-book'>Remove</button>
       </li>
     `;
     booksElem.insertAdjacentHTML('beforeend', bookMarkup);
@@ -48,3 +51,12 @@ const renderBook = () => {
 };
 
 btnAddBook.addEventListener('click', addNewBook);
+
+const removeBookElem = document.getElementById('remove-book');
+
+booksElem.addEventListener('click', (e) => {
+  const li = e.target.closest('li');
+  const { id } = li.dataset;
+  removeBook(+id);
+  renderBook();
+});
