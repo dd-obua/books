@@ -1,21 +1,25 @@
 'use strict';
 
+const booksElem = document.getElementById('book-collection');
+
 const bookCollection = [{ title: 'Power', author: 'Denis' }];
 
 const addNewBook = (title, author) => bookCollection.push({ author, title });
 
 const removeBook = (id) => bookCollection.filter((book) => book.id !== id);
 
-const booksElem = document.getElementById('book-collection');
+const renderBook = () => {
+  return bookCollection.forEach((book) => {
+    const bookMarkup = `
+      <li>
+        <span class="title">${book.title}</span>
+        <span class="author">${book.author}</span>
+        <button>Remove</button>
+      </li>
+    `;
 
-bookCollection.forEach((book) => {
-  const bookMarkup = `
-    <li>
-      <span class="title">${book.title}</span>
-      <span class="author">${book.author}</span>
-      <button>Remove</button>
-    </li>
-  `;
+    booksElem.insertAdjacentHTML('beforeend', bookMarkup);
+  });
+};
 
-  booksElem.insertAdjacentHTML('beforeend', bookMarkup);
-});
+renderBook();
